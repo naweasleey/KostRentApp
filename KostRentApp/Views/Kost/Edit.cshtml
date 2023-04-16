@@ -1,0 +1,50 @@
+﻿@model DataKost;
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Edit Kost</h3>
+            </div>
+
+            <div class="card-body">
+                <form enctype="multipart/form-data" method="post" action="Edit">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <div class="mb-3">
+                        <label>Nama</label>
+                        <input type="text" name="Name" class="form-control" value="@Model.Name" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Alamat</label>
+                        <input type="text" name="Address" class="form-control" value="@Model.Address" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Harga</label>
+                        <input type="text" name="Price" class="form-control" value="@Model.Price" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Gambar</label>
+                        <input type="file" name="Photo" class="form-control" accept=".png,.jpg,.jpeg" />
+                        <span asp-validation-for="Photo" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label>Status</label>
+                        <select name="Status" class="form-control" value="@Model.Status">
+                            <option>Not Published</option>
+                            <option>Published</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

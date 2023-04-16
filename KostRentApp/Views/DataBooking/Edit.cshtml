@@ -1,0 +1,42 @@
+﻿@model DataBooking;
+@{
+    Layout = "_AdminLayout";
+}
+
+<div class="row">
+    <div class="col-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Edit Data Booking</h3>
+            </div>
+
+            <div class="card-body">
+                <form enctype="multipart/form-data" method="post" action="Edit">
+                    <input type="hidden" name="Id" value="@Model.Id" />
+                    <div class="mb-3">
+                        <label>Nama</label>
+                        <input type="text" name="Name" class="form-control" value="@Model.Name" />
+                    </div>
+                    <div class="mb-3">
+                        <label>No Telepon</label>
+                        <input type="text" name="PhoneNumber" class="form-control" value="@Model.PhoneNumber" />
+                    </div>
+                    <div class="mb-3">
+                        <label>No KTP</label>
+                        <input type="text" name="IDCardNumber" class="form-control" value="@Model.IDCardNumber" />
+                    </div>
+                    <div class="mb-3">
+                        <label>Pekerjaan</label>
+                        <input type="text" name="Employment" class="form-control" value="@Model.Employment" />
+                    </div>
+                    <div class="mb-3">
+                        <button type="submit" class="btn btn-success">
+                            Save
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
