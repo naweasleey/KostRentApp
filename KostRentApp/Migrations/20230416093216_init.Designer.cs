@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace KostRentApp.Migrations
 {
     [DbContext(typeof(MySqlContext))]
-    [Migration("20230415043220_delete_status")]
-    partial class delete_status
+    [Migration("20230416093216_init")]
+    partial class init
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -32,7 +32,8 @@ namespace KostRentApp.Migrations
                         .HasColumnType("longtext");
 
                     b.Property<string>("Username")
-                        .HasColumnType("longtext");
+                        .HasMaxLength(12)
+                        .HasColumnType("varchar(12)");
 
                     b.HasKey("Id");
 
@@ -43,6 +44,9 @@ namespace KostRentApp.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<int>("DataKostId")
                         .HasColumnType("int");
 
                     b.Property<string>("Employment")
@@ -58,6 +62,8 @@ namespace KostRentApp.Migrations
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("DataKostId");
 
                     b.ToTable("DataBookings");
                 });
@@ -80,12 +86,51 @@ namespace KostRentApp.Migrations
                     b.Property<int?>("Price")
                         .HasColumnType("int");
 
-                    b.Property<string>("Status")
+                    b.Property<int>("StatId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("StatId");
+
+                    b.ToTable("DataKosts");
+                });
+
+            modelBuilder.Entity("KostRentApp.Models.Status", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Stat")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.HasKey("Id");
 
-                    b.ToTable("DataKosts");
+                    b.ToTable("Stat");
+                });
+
+            modelBuilder.Entity("KostRentApp.Models.DataBooking", b =>
+                {
+                    b.HasOne("KostRentApp.Models.DataKost", "DataKost")
+                        .WithMany()
+                        .HasForeignKey("DataKostId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("DataKost");
+                });
+
+            modelBuilder.Entity("KostRentApp.Models.DataKost", b =>
+                {
+                    b.HasOne("KostRentApp.Models.Status", "Stat")
+                        .WithMany()
+                        .HasForeignKey("StatId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Stat");
                 });
 #pragma warning restore 612, 618
         }

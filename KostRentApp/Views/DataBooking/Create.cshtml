@@ -1,4 +1,4 @@
-﻿@model DataBooking;
+﻿@model DataKost;
 
 <div class="row">
     <div class="col-6">
@@ -9,6 +9,7 @@
 
             <div class="card-body">
                 <form enctype="multipart/form-data" method="post" asp-action="Create" asp-controller="DataBooking">
+                    <input type="text" value="@Model.Id" name="idKamar" hidden>
                     <div class="mb-3">
                         <label>Nama</label>
                         <input type="text" name="Name" class="form-control" />

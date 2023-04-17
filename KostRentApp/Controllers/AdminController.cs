@@ -4,9 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KostRentApp.Controllers
 {
+    [Authorize]
     public class AdminController : Controller
     {
-        [Authorize]
         public IActionResult Index()
         {
             return View();

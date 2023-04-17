@@ -18,7 +18,9 @@
                             <th>No Telepon</th>
                             <th>No KTP</th>
                             <th>Pekerjaan</th>
+                            <th>Kamar</th>
                             <th>Status</th>
+                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -29,6 +31,8 @@
                                 <td>@booking.PhoneNumber</td>
                                 <td>@booking.IDCardNumber</td>
                                 <td>@booking.Employment</td>
+                                <td>@booking.DataKost.Name</td>
+                                <td>@booking.Stat.Stat</td>
                                 <td>
                                     <a href="/DataBooking/Edit/@booking.Id" class="btn btn-warning">Edit</a>
                                     <a href="/DataBooking/Delete/@booking.Id" class="btn btn-danger">Delete</a>

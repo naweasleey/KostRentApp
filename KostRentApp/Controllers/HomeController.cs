@@ -1,6 +1,7 @@
 ﻿using KostRentApp.Data;
 using KostRentApp.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace KostRentApp.Controllers
@@ -18,8 +19,7 @@ namespace KostRentApp.Controllers
 
         public IActionResult Index()
         {
-            var datakost = _context.DataKosts.ToList();
-
+            var datakost = _context.DataKosts.Include(d => d.Stat).Where(dk => dk.Stat.Stat == "Published").ToList();
             return View(datakost);
         }
 

@@ -14,5 +14,6 @@ namespace KostRentApp.Data
         public DbSet<Admin> Admins { get; set; } 
         public DbSet<DataKost> DataKosts { get; set; }
         public DbSet<DataBooking> DataBookings { get; set; }
+        public DbSet<Status> Stat { get; set; }
     }
 }

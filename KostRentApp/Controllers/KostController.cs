@@ -2,10 +2,13 @@
 using KostRentApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 namespace KostRentApp.Controllers
 {
+    [Authorize]
+
     public class KostController : Controller
     {
 
@@ -19,10 +22,9 @@ namespace KostRentApp.Controllers
             _env = x;
         }
 
-        [Authorize]
         public IActionResult Index()
         {
-            var kost = _context.DataKosts.ToList();
+            var kost = _context.DataKosts.Include(dk => dk.Stat).ToList();
 
             return View(kost);
 
@@ -34,7 +36,7 @@ namespace KostRentApp.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create([FromForm] DataKost dataKost, IFormFile Photo)
+        public IActionResult Create([FromForm] DataKost dataKost, IFormFile Photo,int idStatus)
         {
             var filename = "picture_" + dataKost.Name + Path.GetExtension(Photo.FileName);
             var filepath = Path.Combine(_env.WebRootPath, "Upload", filename);
@@ -45,6 +47,7 @@ namespace KostRentApp.Controllers
             }
 
             dataKost.Photo = filename;
+            dataKost.Stat = _context.Stat.Where(s => s.Id == idStatus).FirstOrDefault();
 
             _context.DataKosts.Add(dataKost);
             _context.SaveChanges();
@@ -54,13 +57,12 @@ namespace KostRentApp.Controllers
 
         public IActionResult Edit(int Id)
         {
-            var kost = _context.DataKosts.FirstOrDefault(x => x.Id == Id);
-
+            var kost = _context.DataKosts.Include(dk => dk.Stat).Where(k => k.Id == Id).FirstOrDefault();
             return View(kost);
         }
 
         [HttpPost]
-        public IActionResult Edit([FromForm] DataKost kost, IFormFile Photo)
+        public IActionResult Edit([FromForm] DataKost kost, IFormFile Photo, int idStatus)
         {
             var filename = "picture_" + kost.Name + Path.GetExtension(Photo.FileName);
             var filepath = Path.Combine(_env.WebRootPath, "Upload", filename);
@@ -69,10 +71,8 @@ namespace KostRentApp.Controllers
             {
                 Photo.CopyTo(stream);
             }
-
             kost.Photo = filename;
-
-
+            kost.Stat = _context.Stat.Where(s => s.Id == idStatus).FirstOrDefault();
 
             _context.DataKosts.Update(kost);
             _context.SaveChanges();

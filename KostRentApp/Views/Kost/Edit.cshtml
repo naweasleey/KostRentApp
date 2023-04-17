@@ -27,14 +27,14 @@
                     </div>
                     <div class="mb-3">
                         <label>Gambar</label>
-                        <input type="file" name="Photo" class="form-control" accept=".png,.jpg,.jpeg" />
+                        <input type="file" name="Photo" class="form-control" accept=".png,.jpg,.jpeg"/>
                         <span asp-validation-for="Photo" class="text-danger"></span>
                     </div>
                     <div class="mb-3">
                         <label>Status</label>
-                        <select name="Status" class="form-control" value="@Model.Status">
-                            <option>Not Published</option>
-                            <option>Published</option>
+                        <select name="idStatus" class="form-control" value="@Model.Stat.Stat">
+                            <option value="1">Published</option>
+                            <option value="2">Not Published</option>
                         </select>
                     </div>
                     <div class="mb-3">

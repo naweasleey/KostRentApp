@@ -2,11 +2,13 @@
 using KostRentApp.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
 
 
 namespace KostRentApp.Controllers
 {
+    [Authorize]
     public class DataBookingController : Controller
     {
         private readonly ILogger<DataBookingController> _logger;
@@ -20,10 +22,9 @@ namespace KostRentApp.Controllers
             _env = x;
         }
 
-        [Authorize]
         public IActionResult Index()
         {
-            var booking = _context.DataBookings.ToList();
+            var booking = _context.DataBookings.Include(d => d.DataKost).Include(d => d.Stat).ToList();
             return View(booking);
         }
 
@@ -54,25 +55,33 @@ namespace KostRentApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public IActionResult Create()
+        public IActionResult Create(int Id)
         {
-            return View();
+            var kamar = _context.DataKosts.Where(dk => dk.Id == Id).FirstOrDefault();
+            return View(kamar);
         }
 
         [HttpPost]
-        public IActionResult Create([FromForm] DataBooking dataBooking)
+        public IActionResult Create([FromForm] DataBooking dataBooking,int idKamar)
         {
-
-            _context.DataBookings.Add(dataBooking);
+            var newBooking = new DataBooking
+            {
+                Name = dataBooking.Name,
+                PhoneNumber = dataBooking.PhoneNumber,
+                IDCardNumber = dataBooking.IDCardNumber,
+                Employment = dataBooking.Employment,
+                DataKost = _context.DataKosts.Where(k => k.Id == idKamar).FirstOrDefault(),
+                Stat = _context.Stat.Where(s => s.Id == 3).FirstOrDefault()
+            };  
+            _context.DataBookings.Add(newBooking);
             _context.SaveChanges();
 
+            var getIdKamar = _context.DataKosts.Where(d => d.Id == idKamar).FirstOrDefault();
+            getIdKamar.Stat = _context.Stat.Where(s => s.Id == 2).FirstOrDefault();
 
+            _context.DataKosts.Update(getIdKamar);
+            _context.SaveChanges();
             return RedirectToAction("Index", "Home");
         }
-
-
-
-
-
     }
 }

@@ -12,6 +12,7 @@ namespace KostRentApp.Models
         public string? PhoneNumber { get; set; }
         public string? IDCardNumber { get; set; }
         public string? Employment { get; set; }
-
+        public DataKost DataKost { get; set; }
+        public Status Stat { get; set; }
     }
 }
