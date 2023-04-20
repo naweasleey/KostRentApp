@@ -2,6 +2,7 @@
 using KostRentApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using System.Diagnostics;
 
 namespace KostRentApp.Controllers
@@ -17,9 +18,14 @@ namespace KostRentApp.Controllers
             _context = c;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string search)
         {
             var datakost = _context.DataKosts.Include(d => d.Stat).Where(dk => dk.Stat.Stat == "Published").ToList();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                datakost = _context.DataKosts.Where(x => x.Address.Contains(search)).ToList();
+            }
             return View(datakost);
         }
 
@@ -41,7 +47,6 @@ namespace KostRentApp.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
-
 
     }
 }

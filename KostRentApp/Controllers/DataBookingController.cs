@@ -22,9 +22,13 @@ namespace KostRentApp.Controllers
             _env = x;
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string search)
         {
             var booking = _context.DataBookings.Include(d => d.DataKost).Include(d => d.Stat).ToList();
+            if (!String.IsNullOrEmpty(search))
+            {
+                booking = _context.DataBookings.Where(x => x.Name.ToLower().Contains(search)).ToList();
+            }
             return View(booking);
         }
 
